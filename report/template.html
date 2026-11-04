@@ -1,0 +1,250 @@
+<meta charset="utf-8">
+<title>Eval-Awareness Anchors</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one 760px reading column; charts break out to 1040px; a lab-readout feel, ink on cool paper */
+:root {
+  --bg: #f4f6f8; --surface: #ffffff; --ink: #14181f; --ink-2: #4a525e; --ink-3: #7d8591;
+  --rule: #dde2e8; --grid: #eceff3; --accent: #2a57d6; --eval: #2a57d6; --depl: #d9692b;
+  --band: rgba(42, 87, 214, 0.07); --code: #eef1f5;
+  --f-display: "Bricolage Grotesque", "Helvetica Neue", Arial, sans-serif;
+  --f-body: "IBM Plex Sans", "Helvetica Neue", Arial, sans-serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #0f1216; --surface: #171b21; --ink: #e8ebef; --ink-2: #aab2bd; --ink-3: #7b8490;
+  --rule: #2a3039; --grid: #222831; --accent: #7a9cff; --eval: #7a9cff; --depl: #f0935a;
+  --band: rgba(122, 156, 255, 0.09); --code: #1f242c; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #0f1216; --surface: #171b21; --ink: #e8ebef; --ink-2: #aab2bd; --ink-3: #7b8490;
+  --rule: #2a3039; --grid: #222831; --accent: #7a9cff; --eval: #7a9cff; --depl: #f0935a;
+  --band: rgba(122, 156, 255, 0.09); --code: #1f242c; color-scheme: dark }
+
+body { background: var(--bg); color: var(--ink); font: 16px/1.6 var(--f-body);
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+main { max-width: 1040px; margin: 0 auto; padding-block: 56px 96px; display: grid; gap: 72px; }
+section { display: grid; gap: 20px; min-width: 0; }
+.col { max-width: 720px; }
+h1, h2, h3 { font-family: var(--f-display); text-wrap: balance; margin: 0; line-height: 1.12; }
+h1 { font-size: clamp(2.2rem, 5vw, 3.6rem); font-weight: 700; letter-spacing: -0.02em; }
+h2 { font-size: clamp(1.5rem, 3vw, 2rem); font-weight: 700; letter-spacing: -0.01em; }
+h3 { font-size: 1.1rem; font-weight: 500; }
+p { margin: 0; color: var(--ink-2); }
+p strong { color: var(--ink); font-weight: 600; }
+.eyebrow { font: 500 0.75rem/1 var(--f-mono); letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); }
+.lede { font-size: 1.2rem; color: var(--ink-2); max-width: 680px; }
+code, .mono { font-family: var(--f-mono); font-size: 0.86em; }
+code { background: var(--code); padding: 1px 5px; border-radius: 4px; }
+
+.findings { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 1px; background: var(--rule);
+  border: 1px solid var(--rule); border-radius: 10px; overflow: hidden; }
+.finding { background: var(--surface); padding: 20px; display: grid; gap: 8px; align-content: start; min-width: 0; }
+.finding .num { font: 700 2rem/1 var(--f-display); color: var(--ink); font-variant-numeric: tabular-nums; }
+.finding p { font-size: 0.92rem; }
+
+.panel { background: var(--surface); border: 1px solid var(--rule); border-radius: 10px; padding: 20px; min-width: 0; display: grid; gap: 14px; }
+.chart { width: 100%; overflow-x: auto; }
+.chart svg { display: block; width: 100%; height: auto; }
+.chart svg text { fill: var(--ink-2); font: 11px var(--f-body); }
+.chart svg .axis line, .chart svg .axis path { stroke: var(--rule); }
+.chart svg .grid { stroke: var(--grid); }
+.note { font-size: 0.85rem; color: var(--ink-3); }
+
+.tabs { display: flex; flex-wrap: wrap; gap: 6px; }
+.tab { font: 500 0.82rem var(--f-body); border: 1px solid var(--rule); background: var(--surface); color: var(--ink-2);
+  padding: 6px 12px; border-radius: 999px; cursor: pointer; }
+.tab[aria-selected="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.tab:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.pill { display: inline-block; font: 500 0.7rem/1.6 var(--f-mono); letter-spacing: 0.04em; padding: 0 7px; border-radius: 999px;
+  border: 1px solid currentColor; }
+.pill.EVALUATION { color: var(--eval); } .pill.DEPLOYMENT { color: var(--depl); }
+
+.legend { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 0.8rem; color: var(--ink-2); }
+.legend span { display: inline-flex; align-items: center; gap: 6px; }
+.sw { width: 10px; height: 10px; border-radius: 2px; display: inline-block; flex: none; }
+.ln { width: 16px; height: 2px; display: inline-block; flex: none; }
+
+.chunks { display: grid; gap: 2px; max-height: 420px; overflow-y: auto; border-top: 1px solid var(--rule); padding-top: 8px; }
+.chunk { display: grid; grid-template-columns: 28px 10px 1fr 64px; gap: 10px; align-items: baseline; font-size: 0.86rem;
+  padding: 4px 6px; border-radius: 4px; color: var(--ink-2); }
+.chunk:hover, .chunk.hl { background: var(--code); color: var(--ink); }
+.chunk .idx, .chunk .val { font-family: var(--f-mono); font-size: 0.78rem; color: var(--ink-3); font-variant-numeric: tabular-nums; }
+.chunk .val { text-align: right; }
+.chunk .sw { align-self: center; }
+
+.tip { position: fixed; pointer-events: none; background: var(--ink); color: var(--bg); font-size: 0.8rem; line-height: 1.4;
+  padding: 8px 10px; border-radius: 6px; max-width: 320px; z-index: 20; }
+.tip b { font-weight: 600; }
+
+table { border-collapse: collapse; width: 100%; font-size: 0.86rem; }
+th, td { text-align: left; padding: 7px 10px; border-bottom: 1px solid var(--rule); vertical-align: top; }
+th { font: 500 0.72rem var(--f-mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-3); }
+td.n { font-family: var(--f-mono); font-variant-numeric: tabular-nums; text-align: right; white-space: nowrap; }
+.tbl { overflow-x: auto; }
+
+.steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px; counter-reset: s; }
+.step { border-top: 2px solid var(--ink); padding-top: 10px; display: grid; gap: 4px; }
+.step::before { counter-increment: s; content: counter(s, decimal-leading-zero); font: 500 0.75rem var(--f-mono); color: var(--accent); }
+.step h3 { font-size: 1rem; }
+.step p { font-size: 0.86rem; }
+
+details { border-top: 1px solid var(--rule); padding-block: 12px; }
+details summary { cursor: pointer; font: 500 1rem var(--f-display); color: var(--ink); }
+details > div { padding-top: 12px; display: grid; gap: 10px; }
+details li { color: var(--ink-2); font-size: 0.92rem; }
+.two { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; align-items: start; }
+@media (prefers-reduced-motion: no-preference) { .tab { transition: background .15s, color .15s; } }
+</style>
+
+<main>
+__BODY__
+</main>
+<div class="tip" id="tip" hidden></div>
+
+<script>
+const DATA = __DATA__;
+const COLORS = {explicit_framing:"#2a78d6",task_format:"#eb6834",known_benchmark:"#1baf7a",problem_design:"#eda100",
+  input_authenticity:"#e87ba4",scenario_realism:"#008300",user_context:"#6250d6",harmfulness:"#e34948",
+  meta_reasoning:"#52514e",task_reasoning:"#a3a29b",other:"#d5d4ce"};
+const NAMES = {explicit_framing:"Explicit framing",task_format:"Task format",known_benchmark:"Known benchmark",
+  problem_design:"Problem design",input_authenticity:"Input authenticity",scenario_realism:"Scenario realism",
+  user_context:"User context",harmfulness:"Harmfulness",meta_reasoning:"Meta reasoning",task_reasoning:"Task reasoning",other:"Other"};
+const SRC = {gsm8k:"GSM8K",xstest:"XSTest",ifeval:"IFEval",mt_bench:"MT-Bench",alpaca_eval:"AlpacaEval",intercode_ctf:"InterCode CTF (cut points)",
+  wildchat_test:"WildChat, test-like",wildchat_natural:"WildChat, natural"};
+const NS = "http://www.w3.org/2000/svg";
+const tip = document.getElementById("tip");
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+function el(tag, attrs = {}, parent) { const e = document.createElementNS(NS, tag);
+  for (const [k, v] of Object.entries(attrs)) e.setAttribute(k, v); if (parent) parent.appendChild(e); return e; }
+function txt(parent, x, y, s, attrs = {}) { const t = el("text", {x, y, ...attrs}, parent); t.textContent = s; return t; }
+function showTip(ev, html) { tip.innerHTML = html; tip.hidden = false;
+  const w = tip.offsetWidth, h = tip.offsetHeight; let x = ev.clientX + 14, y = ev.clientY + 14;
+  if (x + w > innerWidth - 8) x = ev.clientX - w - 14; if (y + h > innerHeight - 8) y = ev.clientY - h - 14;
+  tip.style.left = x + "px"; tip.style.top = y + "px"; }
+function hideTip() { tip.hidden = true; }
+const css = v => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+const pct = p => p == null ? "–" : Math.round(p * 100) + "%";
+const sgn = v => v == null ? "–" : (v >= 0 ? "+" : "−") + Math.abs(v).toFixed(2);
+
+/* ---------- Screening strip plot ---------- */
+function screening(host) {
+  const order = ["gsm8k","xstest","ifeval","mt_bench","alpaca_eval","intercode_ctf","wildchat_test","wildchat_natural"];
+  const W = 900, rowH = 34, L = 190, R = 20, T = 26, H = T + order.length * rowH + 30;
+  const svg = el("svg", {viewBox: `0 0 ${W} ${H}`, role: "img", "aria-label": "P(EVALUATION) per screened prompt"}, host);
+  const x = p => L + p * (W - L - R);
+  el("rect", {x: x(0.3), y: T - 8, width: x(0.7) - x(0.3), height: order.length * rowH + 4, fill: css("--band")}, svg);
+  txt(svg, (x(0.3) + x(0.7)) / 2, T - 12, "uncertain band (0.3–0.7)", {"text-anchor": "middle", style: "fill:var(--accent)"});
+  for (const t of [0, .25, .5, .75, 1]) { el("line", {x1: x(t), x2: x(t), y1: T - 6, y2: T + order.length * rowH, class: "grid"}, svg);
+    txt(svg, x(t), H - 8, pct(t), {"text-anchor": "middle"}); }
+  order.forEach((src, r) => {
+    const y = T + r * rowH + rowH / 2;
+    txt(svg, L - 12, y + 4, SRC[src], {"text-anchor": "end", style: "fill:var(--ink)"});
+    const items = DATA.screening.filter(d => d.source === src).sort((a, b) => a.p_eval - b.p_eval);
+    const seen = {};
+    items.forEach(d => { const k = Math.round(d.p_eval * 40); const j = (seen[k] = (seen[k] || 0) + 1) - 1;
+      const c = el("circle", {cx: x(d.p_eval), cy: y + (j % 2 ? 1 : -1) * Math.ceil(j / 2) * 5, r: 5,
+        fill: d.ground_truth === "EVALUATION" ? css("--eval") : css("--depl"), stroke: css("--surface"), "stroke-width": 1.5}, svg);
+      c.style.cursor = "default";
+      c.addEventListener("mousemove", ev => showTip(ev, `<b>${esc(d.id)}</b> · truth ${d.ground_truth}<br>P(EVAL) = ${d.p_eval.toFixed(2)} (n=${d.n})<br><span style="opacity:.75">${esc(d.preview)}</span>`));
+      c.addEventListener("mouseleave", hideTip);
+    });
+  });
+  txt(svg, L + (W - L - R) / 2, H + 0, "");
+}
+
+/* ---------- Per-run anchors chart ---------- */
+function runChart(host, list, run) {
+  host.innerHTML = ""; list.innerHTML = "";
+  const n = run.chunks.length, W = 960, L = 54, R = 16, T = 14, H1 = 150, gap = 26, H2 = 220, B = 26, H = T + H1 + gap + H2 + B;
+  const svg = el("svg", {viewBox: `0 0 ${W} ${H}`, role: "img", "aria-label": `Counterfactual importance for ${run.title}`}, host);
+  const step = (W - L - R) / n, cx = i => L + step * (i + 0.5);
+  // top: P(EVAL)
+  const y1 = p => T + (1 - p) * H1;
+  for (const t of [0, .5, 1]) { el("line", {x1: L, x2: W - R, y1: y1(t), y2: y1(t), class: "grid"}, svg); txt(svg, L - 8, y1(t) + 4, pct(t), {"text-anchor": "end"}); }
+  txt(svg, L, T - 2, "P(EVALUATION) if we resample from before chunk i", {style: "fill:var(--ink-3)"});
+  const line = (vals, color, dash) => { const pts = vals.slice(0, n + 1).map((p, i) => p == null ? null : [L + step * i, y1(p)]).filter(Boolean);
+    el("path", {d: "M" + pts.map(p => p.join(",")).join("L"), fill: "none", stroke: color, "stroke-width": 2, "stroke-dasharray": dash || "", "stroke-linejoin": "round"}, svg); };
+  if (run.p_forced) line(run.p_forced, css("--depl"), "4 3");
+  line(run.p_all, css("--eval"));
+  // bottom: importance
+  const imps = run.chunks.map(c => c.imp), ses = run.chunks.map(c => c.se || 0);
+  const m = Math.max(0.1, ...imps.map((v, i) => Math.abs(v) + ses[i])) * 1.08;
+  const top2 = T + H1 + gap, mid = top2 + H2 / 2, y2 = v => mid - v / m * (H2 / 2);
+  for (const t of [-m, -m/2, 0, m/2, m]) { el("line", {x1: L, x2: W - R, y1: y2(t), y2: y2(t), class: "grid"}, svg); txt(svg, L - 8, y2(t) + 4, sgn(t), {"text-anchor": "end"}); }
+  txt(svg, L, top2 - 6, "Counterfactual importance (Δ P(EVAL) from keeping chunk i), ±1 SE", {style: "fill:var(--ink-3)"});
+  el("line", {x1: L, x2: W - R, y1: mid, y2: mid, stroke: css("--ink-3"), "stroke-width": 1}, svg);
+  const rows = [];
+  run.chunks.forEach((c, i) => {
+    const bw = Math.max(3, step - 3), h = Math.abs(y2(c.imp) - mid);
+    const bar = el("rect", {x: cx(i) - bw / 2, y: Math.min(y2(c.imp), mid), width: bw, height: Math.max(h, 1), rx: Math.min(3, bw / 3), fill: COLORS[c.tag]}, svg);
+    if (c.se) el("line", {x1: cx(i), x2: cx(i), y1: y2(c.imp - c.se), y2: y2(c.imp + c.se), stroke: css("--ink-3"), "stroke-width": 1}, svg);
+    if (n <= 40 || i % 5 === 0) txt(svg, cx(i), H - 8, i, {"text-anchor": "middle"});
+    const hit = el("rect", {x: L + step * i, y: T, width: step, height: H1 + gap + H2, fill: "transparent"}, svg);
+    const tipHtml = `<b>Chunk ${i}</b> · ${NAMES[c.tag]}${c.dir !== "none" ? (c.dir === "toward_eval" ? " → eval" : " → deployment") : ""}<br>importance ${sgn(c.imp)} ± ${(c.se||0).toFixed(2)} · P(EVAL) before ${pct(c.p_all)}${c.forced_imp != null ? `<br>forced-answer Δ ${sgn(c.forced_imp)}` : ""}<br><span style="opacity:.8">${esc(c.text)}</span>`;
+    hit.addEventListener("mousemove", ev => { showTip(ev, tipHtml); rows[i].classList.add("hl"); });
+    hit.addEventListener("mouseleave", () => { hideTip(); rows[i].classList.remove("hl"); });
+    const row = document.createElement("div"); row.className = "chunk";
+    row.innerHTML = `<span class="idx">${i}</span><span class="sw" style="background:${COLORS[c.tag]}" title="${NAMES[c.tag]}"></span><span>${esc(c.text)} <span class="note">· ${NAMES[c.tag]}${c.dir === "toward_eval" ? " [E]" : c.dir === "toward_deployment" ? " [D]" : ""}</span></span><span class="val">${sgn(c.imp)}</span>`;
+    row.addEventListener("mouseenter", () => bar.setAttribute("stroke", css("--ink")));
+    row.addEventListener("mouseleave", () => bar.removeAttribute("stroke"));
+    list.appendChild(row); rows.push(row);
+  });
+  txt(svg, (W + L) / 2, H - 8 + 0, "");
+}
+
+function runsSection() {
+  const tabs = document.getElementById("run-tabs"), cot = document.getElementById("cot-tabs"), host = document.getElementById("run-chart"),
+    list = document.getElementById("run-chunks"), meta = document.getElementById("run-meta"), legend = document.getElementById("run-legend");
+  tabs.innerHTML = ""; cot.innerHTML = "";
+  const prompts = PROMPT_ORDER.filter(p => DATA.runs.some(r => r.prompt === p));
+  let cur = {prompt: null, run: null};
+  function pickRun(r) {
+    cur.run = r.run;
+    [...cot.children].forEach(b => b.setAttribute("aria-selected", b.dataset.run === r.run));
+    meta.innerHTML = `<span style="font-family:var(--f-display)">“${esc(r.short.length > 140 ? r.short.slice(0, 140) + "…" : r.short)}”</span><br><span class="pill ${r.ground_truth}">truth: ${r.ground_truth}</span> <span class="pill ${r.base_label}">this CoT said: ${r.base_label}</span> <span class="note">· ${SOURCE_NAMES[r.source] || r.source} · ${r.chunks.length} sentences × ${r.n_per_pos} rollouts${r.screening_p_eval != null ? ` · screening P(EVAL) ${pct(r.screening_p_eval)}` : ""}</span>`;
+    const tags = [...new Set(r.chunks.map(c => c.tag))].sort((a, b) => Object.keys(COLORS).indexOf(a) - Object.keys(COLORS).indexOf(b));
+    legend.innerHTML = `<span><i class="ln" style="background:var(--eval)"></i>resampled P(EVAL)</span>${r.p_forced ? `<span><i class="ln" style="background:var(--depl)"></i>forced-answer P(EVAL)</span>` : ""}` +
+      tags.map(t => `<span><i class="sw" style="background:${COLORS[t]}"></i>${NAMES[t]}</span>`).join("");
+    runChart(host, list, r);
+    try { localStorage.setItem("run", r.run); } catch (e) {}
+  }
+  function pickPrompt(p, prefer) {
+    cur.prompt = p;
+    [...tabs.children].forEach(b => b.setAttribute("aria-selected", b.dataset.prompt === p));
+    const runs = DATA.runs.filter(r => r.prompt === p).sort((a, b) => (a.base_label === "EVALUATION" ? 0 : 1) - (b.base_label === "EVALUATION" ? 0 : 1));
+    cot.innerHTML = "";
+    runs.forEach(r => { const b = document.createElement("button"); b.className = "tab"; b.dataset.run = r.run;
+      b.textContent = `CoT that said ${r.base_label}${r.base_label !== r.ground_truth ? " (wrong)" : ""}`; b.onclick = () => pickRun(r); cot.appendChild(b); });
+    pickRun(runs.find(r => r.run === prefer) || runs[0]);
+  }
+  prompts.forEach(p => { const b = document.createElement("button"); b.className = "tab"; b.dataset.prompt = p; b.textContent = PROMPT_LABELS[p] || p;
+    b.onclick = () => pickPrompt(p); tabs.appendChild(b); });
+  let saved = null; try { saved = localStorage.getItem("run"); } catch (e) {}
+  const sr = DATA.runs.find(r => r.run === saved && prompts.includes(r.prompt));
+  pickPrompt(sr ? sr.prompt : prompts[0], saved);
+}
+
+/* ---------- Horizontal bars (categories, insertion, ablation) ---------- */
+function hbars(host, rows, {domain, fmt = sgn, zero = 0, label = "", W = 900, L = 250}) {
+  const R = 70, rowH = 26, T = 8, H = T + rows.length * rowH + 28;
+  const svg = el("svg", {viewBox: `0 0 ${W} ${H}`, role: "img", "aria-label": label}, host);
+  const x = v => L + (v - domain[0]) / (domain[1] - domain[0]) * (W - L - R);
+  const ticks = domain[0] < 0 ? [domain[0], domain[0] / 2, 0, domain[1] / 2, domain[1]] : [0, .25, .5, .75, 1].map(t => domain[0] + t * (domain[1] - domain[0]));
+  ticks.forEach(t => { el("line", {x1: x(t), x2: x(t), y1: T, y2: T + rows.length * rowH, class: "grid"}, svg); txt(svg, x(t), H - 8, fmt(t), {"text-anchor": "middle"}); });
+  el("line", {x1: x(zero), x2: x(zero), y1: T, y2: T + rows.length * rowH, stroke: css("--ink-3")}, svg);
+  rows.forEach((r, i) => {
+    const y = T + i * rowH, v = r.value;
+    txt(svg, L - 10, y + rowH / 2 + 4, r.label, {"text-anchor": "end", style: r.strong ? "fill:var(--ink);font-weight:600" : "fill:var(--ink)"});
+    if (v == null) return;
+    el("rect", {x: Math.min(x(zero), x(v)), y: y + 5, width: Math.max(Math.abs(x(v) - x(zero)), 1.5), height: rowH - 10, rx: 3, fill: r.color}, svg);
+    if (r.se) el("line", {x1: x(v - r.se), x2: x(v + r.se), y1: y + rowH / 2, y2: y + rowH / 2, stroke: css("--ink-3")}, svg);
+    txt(svg, Math.max(x(zero), x(v)) + 6 + (r.se ? Math.abs(x(r.se) - x(0)) : 0), y + rowH / 2 + 4, r.text ?? fmt(v), {style: "fill:var(--ink-2);font-family:var(--f-mono)"});
+    if (r.tip) { const hit = el("rect", {x: 0, y, width: W, height: rowH, fill: "transparent"}, svg);
+      hit.addEventListener("mousemove", ev => showTip(ev, r.tip)); hit.addEventListener("mouseleave", hideTip); }
+  });
+}
+
+__SCRIPT__
+</script>

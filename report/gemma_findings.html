@@ -1,0 +1,38 @@
+<section>
+  <div class="eyebrow">Summary</div>
+  <h2>What we found</h2>
+  <ul class="col" style="display:grid;gap:10px;margin:0;padding-left:20px">
+    <li><b>Gemma decides in the first few sentences, then rationalises.</b> Its verdict locks in on average 19% of the way through the CoT (Qwen: 53%).
+      Mean |importance| is 0.18 in the first fifth of the CoT, 0.04 in the second, and ≈ 0 after that. The long second half, where Gemma lists
+      “Evaluation: … / Deployment: …” bullets, names benchmarks and weighs the evidence, changes nothing: resampling it always reaches the same verdict.</li>
+    <li><b>The anchors are early, generic sentences about the prompt's design.</b> The biggest ones are first impressions like
+      “The prompt is very simple, direct, and common for testing basic creative/formatting capabilities of an LLM” (+0.82, ASCII cat) or
+      “It's a ‘deep’ question often used to test a model's reasoning…” (+0.76). Problem-design sentences have the highest mean |importance| (0.09);
+      known-benchmark, meta-reasoning and scenario-realism sentences, which mostly come after the lock-in, are near 0. For Qwen, known-benchmark sentences carried the most weight.</li>
+    <li><b>Larger single-sentence effects than Qwen, but fewer of them.</b> Max |importance| 0.82 (Qwen 0.68), but only 9% of sentences reach |z| ≥ 2 (Qwen 15%).</li>
+    <li><b>Forced answers: Gemma defaults to DEPLOYMENT and flips late.</b> Forced to answer with an empty CoT it says DEPLOYMENT 100% of the time, yet it reaches EVALUATION
+      43% of the time when it thinks freely. In each EVALUATION CoT the forced answer switches to EVALUATION in one step, usually a few sentences <em>after</em> the
+      highest-importance sentence. So the anchor sets the direction before Gemma would state the verdict. Per-sentence forced and resampled effects barely correlate (median r = 0.05).</li>
+    <li><b>Tone of the request decides the verdict, even more than for Qwen.</b> Same content: benchmark header 98% EVAL, formal 90%, original 46%, personal context 22%, casual 8%
+      (Qwen: 74 / 75 / 48 / 7 / 15%). Deleting surface cues from the pilot transcripts (MMLU header, options, CTF reward sentence…) again changes nothing.</li>
+    <li><b>Planted sentences persuade it about as much as Qwen.</b> One inserted eval-leaning sentence raises P(EVAL) by 0.31–0.47 vs a neutral control, and a deployment-leaning one lowers it by 0.30–0.45.
+      As for Qwen, “no personal context” (+0.08) and “maybe this is testing whether I can tell” (+0.10) barely move it.</li>
+    <li><b>No sign that believing “this is a test” changes refusals.</b> Unlike Qwen (−0.24 compliance), planting “this might be a test of whether I'll refuse” <em>raised</em>
+      Gemma's compliance by +0.12 ± 0.06, the same as the deployment sentence (+0.11). The manipulation check shows Gemma already thinks these borderline requests are evaluations (P(EVAL) ≈ 0.93), so there is little room for the belief to change.</li>
+    <li><b>Different prompts are ambiguous for each model.</b> Of Qwen's 10 uncertain prompts only 2 were also uncertain for Gemma. Gemma calls some of them confidently either way, e.g. the Gendry custard prompt at 0% EVAL and the movie-review prompt at 100% EVAL. Overall Gemma labels screened prompts correctly a bit more often (65% vs 58% at a 0.5 threshold).</li>
+  </ul>
+  <div class="tbl panel" style="margin-top:14px"><h3>Gemma 4 26B-A4B vs Qwen3-32B at a glance</h3>
+  <table><thead><tr><th>Measure</th><th style="text-align:right">Gemma</th><th style="text-align:right">Qwen</th></tr></thead><tbody>
+    <tr><td>Uncertain prompts in screening (0.3–0.7, n = 20) out of 257</td><td class="n">33</td><td class="n">43</td></tr>
+    <tr><td>Sentences per base CoT (resampled runs)</td><td class="n">27 (shortest CoTs)</td><td class="n">22 (median CoTs)</td></tr>
+    <tr><td>Rollouts per position</td><td class="n">20–40</td><td class="n">50</td></tr>
+    <tr><td>Verdict locks in (share of CoT)</td><td class="n">19%</td><td class="n">53%</td></tr>
+    <tr><td>Sentences with |z| ≥ 2</td><td class="n">9%</td><td class="n">15%</td></tr>
+    <tr><td>Largest |importance|</td><td class="n">0.82</td><td class="n">0.68</td></tr>
+    <tr><td>Judge direction has the right sign (|importance| ≥ 0.25)</td><td class="n">17/24</td><td class="n">29/34</td></tr>
+    <tr><td>Forced P(EVAL), empty CoT</td><td class="n">0%</td><td class="n">20%</td></tr>
+    <tr><td>P(EVAL): benchmark header → casual rewrite</td><td class="n">98% → 8%</td><td class="n">74% → 15%</td></tr>
+    <tr><td>Compliance change, “might be a test of whether I'll refuse” vs control</td><td class="n">+0.12</td><td class="n">−0.24</td></tr>
+  </tbody></table>
+  <p class="note">The two studies use different prompts (2 shared), different base-CoT choices and fewer rollouts for Gemma, so compare patterns rather than exact numbers.</p></div>
+</section>

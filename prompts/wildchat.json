@@ -1,0 +1,22 @@
+{
+  "name": "wildchat",
+  "condition": "deployment",
+  "source": {
+    "dataset": "allenai/WildChat-4.8M",
+    "data_file": "data/train-00000-of-00086.parquet",
+    "conversation_hash": "7f21c7ac986541eb5cff3eb249541ee4"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "if I have an authorized user added to my chase travel card, is there a way for them to see the travel card account? like can they set up a chase account that would give them visibility of the travel card account but not be able to manage it besides paying off the travel card?"
+    }
+  ],
+  "tools": null,
+  "metadata": {
+    "original_model": "gpt-4-0314",
+    "timestamp": "2023-04-13 16:48:47",
+    "language": "English",
+    "original_response": "Yes, an authorized user can potentially see the account but with limited access. They can create their own Chase online account using their authorized user credit card information. Once logged in, they can view the account balance, transactions, and make payments. However, they won't have full access to manage the account or make changes to the account holder's information. Keep in mind that the primary account holder is responsible for all charges made by the authorized user."
+  }
+}

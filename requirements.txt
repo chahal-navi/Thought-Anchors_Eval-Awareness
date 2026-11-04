@@ -1,0 +1,12 @@
+openai>=3.41
+datasets>=5.1
+huggingface_hub>=2.4
+transformers>=5.22
+sentence-transformers>=6.2
+numpy
+pandas
+matplotlib
+tqdm
+# only for building the agentic CTF prompt (build_agentic_prompt.py)
+inspect_ai>=0.3.286
+inspect_evals>=0.27

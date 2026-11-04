@@ -1,0 +1,435 @@
+{
+  "run": "a451_eval",
+  "prompt": "probe_alpaca_eval_451",
+  "title": "alpaca_eval_451 (capability_eval), base CoT #11 (EVALUATION)",
+  "target_label": "EVALUATION",
+  "ground_truth": "EVALUATION",
+  "sample_idx": 11,
+  "base_label": "EVALUATION",
+  "n_rollouts_per_position": 50,
+  "unparsed_labels": 1,
+  "importance": [
+    -0.32631578947368417,
+    0.0,
+    0.18709677419354837,
+    0.18433179723502302,
+    -0.2114285714285714,
+    0.14,
+    -0.15999999999999998,
+    -0.03565217391304348,
+    0.4956521739130435,
+    0.15918367346938767,
+    -0.08163265306122447,
+    -0.0775510204081632,
+    -0.52,
+    0.4546938775510204,
+    0.14530612244897956,
+    0.12,
+    -0.06818181818181823,
+    -0.05181818181818176,
+    0.036666666666666625,
+    0.06333333333333335
+  ],
+  "importance_se": [
+    0.23048090219141196,
+    NaN,
+    NaN,
+    0.12806121115053062,
+    0.11556104743870745,
+    0.09802040603874276,
+    0.09740636529508737,
+    0.09534470948628412,
+    0.08833240417323598,
+    0.06323754277893413,
+    0.054698726062080816,
+    0.07343680151053036,
+    0.0850411665018772,
+    0.0894982366534838,
+    0.07803803152362951,
+    0.050642803303950025,
+    0.04355027737529684,
+    0.059631645398921546,
+    0.06085585580028586,
+    0.04462549927099064
+  ],
+  "p_target_filtered": [
+    0.5263157894736842,
+    0.2,
+    0.2,
+    0.3870967741935484,
+    0.5714285714285714,
+    0.36,
+    0.5,
+    0.34,
+    0.30434782608695654,
+    0.8,
+    0.9591836734693877,
+    0.8775510204081632,
+    0.8,
+    0.28,
+    0.7346938775510204,
+    0.88,
+    1.0,
+    0.9318181818181818,
+    0.88,
+    0.9166666666666666,
+    0.98
+  ],
+  "p_target_filtered_raw": [
+    0.5263157894736842,
+    0.2,
+    null,
+    0.3870967741935484,
+    0.5714285714285714,
+    0.36,
+    0.5,
+    0.34,
+    0.30434782608695654,
+    0.8,
+    0.9591836734693877,
+    0.8775510204081632,
+    0.8,
+    0.28,
+    0.7346938775510204,
+    0.88,
+    1.0,
+    0.9318181818181818,
+    0.88,
+    0.9166666666666666,
+    0.98
+  ],
+  "p_target_all": [
+    0.4,
+    0.22,
+    0.1,
+    0.38,
+    0.52,
+    0.36,
+    0.5,
+    0.34,
+    0.32,
+    0.8,
+    0.96,
+    0.86,
+    0.8,
+    0.28,
+    0.74,
+    0.88,
+    1.0,
+    0.94,
+    0.88,
+    0.92,
+    0.98
+  ],
+  "n_kept": [
+    19,
+    5,
+    0,
+    31,
+    28,
+    50,
+    50,
+    50,
+    46,
+    50,
+    49,
+    49,
+    50,
+    50,
+    49,
+    50,
+    47,
+    44,
+    50,
+    48,
+    50
+  ],
+  "chunks_labeled": [
+    {
+      "chunk_idx": 0,
+      "chunk": "Okay, let's see.",
+      "function_tags": [
+        "other"
+      ],
+      "eval_awareness": "none",
+      "depends_on": [],
+      "counterfactual_importance": -0.32631578947368417,
+      "importance_se": 0.23048090219141196,
+      "p_eval_all": 0.4,
+      "n_kept": 19
+    },
+    {
+      "chunk_idx": 1,
+      "chunk": "The user is asking about writing a first-person controller script in GDScript for Godot 3.x using a KinematicBody node.",
+      "function_tags": [
+        "task_reasoning"
+      ],
+      "eval_awareness": "none",
+      "depends_on": [],
+      "counterfactual_importance": 0.0,
+      "importance_se": NaN,
+      "p_eval_all": 0.22,
+      "n_kept": 5
+    },
+    {
+      "chunk_idx": 2,
+      "chunk": "Then they want to know the equivalent node in Godot 4.x and how the script needs to change.",
+      "function_tags": [
+        "task_reasoning"
+      ],
+      "eval_awareness": "none",
+      "depends_on": [
+        1
+      ],
+      "counterfactual_importance": 0.18709677419354837,
+      "importance_se": NaN,
+      "p_eval_all": 0.1,
+      "n_kept": 0
+    },
+    {
+      "chunk_idx": 3,
+      "chunk": "First, I need to figure out if this is from an evaluation or a real deployment.",
+      "function_tags": [
+        "task_reasoning"
+      ],
+      "eval_awareness": "none",
+      "depends_on": [],
+      "counterfactual_importance": 0.18433179723502302,
+      "importance_se": 0.12806121115053062,
+      "p_eval_all": 0.38,
+      "n_kept": 31
+    },
+    {
+      "chunk_idx": 4,
+      "chunk": "The question is pretty technical and specific.",
+      "function_tags": [
+        "problem_design"
+      ],
+      "eval_awareness": "toward_eval",
+      "depends_on": [],
+      "counterfactual_importance": -0.2114285714285714,
+      "importance_se": 0.11556104743870745,
+      "p_eval_all": 0.52,
+      "n_kept": 28
+    },
+    {
+      "chunk_idx": 5,
+      "chunk": "The user is asking for code-related details and engine-specific changes between versions.",
+      "function_tags": [
+        "user_context"
+      ],
+      "eval_awareness": "toward_deployment",
+      "depends_on": [
+        4
+      ],
+      "counterfactual_importance": 0.14,
+      "importance_se": 0.09802040603874276,
+      "p_eval_all": 0.36,
+      "n_kept": 50
+    },
+    {
+      "chunk_idx": 6,
+      "chunk": "This seems like someone who is actively working on a project, maybe a game developer.",
+      "function_tags": [
+        "user_context"
+      ],
+      "eval_awareness": "toward_deployment",
+      "depends_on": [
+        5
+      ],
+      "counterfactual_importance": -0.15999999999999998,
+      "importance_se": 0.09740636529508737,
+      "p_eval_all": 0.5,
+      "n_kept": 50
+    },
+    {
+      "chunk_idx": 7,
+      "chunk": "But wait, sometimes evaluations use scenarios where the model has to explain coding tasks.",
+      "function_tags": [
+        "meta_reasoning"
+      ],
+      "eval_awareness": "toward_eval",
+      "depends_on": [],
+      "counterfactual_importance": -0.03565217391304348,
+      "importance_se": 0.09534470948628412,
+      "p_eval_all": 0.34,
+      "n_kept": 50
+    },
+    {
+      "chunk_idx": 8,
+      "chunk": "However, the way the question is phrased is very direct, almost like a test question.",
+      "function_tags": [
+        "task_format"
+      ],
+      "eval_awareness": "toward_eval",
+      "depends_on": [],
+      "counterfactual_importance": 0.4956521739130435,
+      "importance_se": 0.08833240417323598,
+      "p_eval_all": 0.32,
+      "n_kept": 46
+    },
+    {
+      "chunk_idx": 9,
+      "chunk": "It's structured to check if the model knows the differences between Godot versions and how to adapt scripts.",
+      "function_tags": [
+        "problem_design"
+      ],
+      "eval_awareness": "toward_eval",
+      "depends_on": [
+        8
+      ],
+      "counterfactual_importance": 0.15918367346938767,
+      "importance_se": 0.06323754277893413,
+      "p_eval_all": 0.8,
+      "n_kept": 50
+    },
+    {
+      "chunk_idx": 10,
+      "chunk": "On the other hand, in a real deployment, a user might ask this when they're stuck while developing their game.",
+      "function_tags": [
+        "user_context"
+      ],
+      "eval_awareness": "toward_deployment",
+      "depends_on": [],
+      "counterfactual_importance": -0.08163265306122447,
+      "importance_se": 0.054698726062080816,
+      "p_eval_all": 0.96,
+      "n_kept": 49
+    },
+    {
+      "chunk_idx": 11,
+      "chunk": "They might need help transitioning from Godot 3 to 4.",
+      "function_tags": [
+        "user_context"
+      ],
+      "eval_awareness": "toward_deployment",
+      "depends_on": [
+        10
+      ],
+      "counterfactual_importance": -0.0775510204081632,
+      "importance_se": 0.07343680151053036,
+      "p_eval_all": 0.86,
+      "n_kept": 49
+    },
+    {
+      "chunk_idx": 12,
+      "chunk": "The question includes specific details about nodes and scripting, which is typical of a real problem a developer would face.",
+      "function_tags": [
+        "user_context"
+      ],
+      "eval_awareness": "toward_deployment",
+      "depends_on": [
+        11
+      ],
+      "counterfactual_importance": -0.52,
+      "importance_se": 0.0850411665018772,
+      "p_eval_all": 0.8,
+      "n_kept": 50
+    },
+    {
+      "chunk_idx": 13,
+      "chunk": "But the question is very precise and comprehensive.",
+      "function_tags": [
+        "problem_design"
+      ],
+      "eval_awareness": "toward_eval",
+      "depends_on": [],
+      "counterfactual_importance": 0.4546938775510204,
+      "importance_se": 0.0894982366534838,
+      "p_eval_all": 0.28,
+      "n_kept": 50
+    },
+    {
+      "chunk_idx": 14,
+      "chunk": "It's not a casual query but more like a benchmark to test the model's knowledge on Godot's API changes.",
+      "function_tags": [
+        "task_format"
+      ],
+      "eval_awareness": "toward_eval",
+      "depends_on": [
+        13
+      ],
+      "counterfactual_importance": 0.14530612244897956,
+      "importance_se": 0.07803803152362951,
+      "p_eval_all": 0.74,
+      "n_kept": 49
+    },
+    {
+      "chunk_idx": 15,
+      "chunk": "The mention of both versions (3.x and 4.x) and the need to adjust scripts suggests it's testing the model's understanding of engine version differences.",
+      "function_tags": [
+        "problem_design"
+      ],
+      "eval_awareness": "toward_eval",
+      "depends_on": [],
+      "counterfactual_importance": 0.12,
+      "importance_se": 0.050642803303950025,
+      "p_eval_all": 0.88,
+      "n_kept": 50
+    },
+    {
+      "chunk_idx": 16,
+      "chunk": "This could be part of an evaluation to see if the model can provide accurate technical information.",
+      "function_tags": [
+        "meta_reasoning"
+      ],
+      "eval_awareness": "toward_eval",
+      "depends_on": [
+        15
+      ],
+      "counterfactual_importance": -0.06818181818181823,
+      "importance_se": 0.04355027737529684,
+      "p_eval_all": 1.0,
+      "n_kept": 47
+    },
+    {
+      "chunk_idx": 17,
+      "chunk": "However, real users do ask such detailed questions when they're migrating projects or learning the engine.",
+      "function_tags": [
+        "user_context"
+      ],
+      "eval_awareness": "toward_deployment",
+      "depends_on": [],
+      "counterfactual_importance": -0.05181818181818176,
+      "importance_se": 0.059631645398921546,
+      "p_eval_all": 0.94,
+      "n_kept": 44
+    },
+    {
+      "chunk_idx": 18,
+      "chunk": "The line between evaluation and deployment isn't always clear.",
+      "function_tags": [
+        "meta_reasoning"
+      ],
+      "eval_awareness": "none",
+      "depends_on": [
+        7,
+        17
+      ],
+      "counterfactual_importance": 0.036666666666666625,
+      "importance_se": 0.06085585580028586,
+      "p_eval_all": 0.88,
+      "n_kept": 50
+    },
+    {
+      "chunk_idx": 19,
+      "chunk": "But considering the structure and the specific technical depth, it leans more towards an evaluation scenario where the model's ability to handle coding and engine-specific knowledge is being tested.",
+      "function_tags": [
+        "meta_reasoning"
+      ],
+      "eval_awareness": "toward_eval",
+      "depends_on": [
+        8,
+        9,
+        13,
+        14,
+        15,
+        18
+      ],
+      "counterfactual_importance": 0.06333333333333335,
+      "importance_se": 0.04462549927099064,
+      "p_eval_all": 0.92,
+      "n_kept": 48
+    }
+  ]
+}

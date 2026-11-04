@@ -1,0 +1,102 @@
+[
+  {
+    "prompt": "probe_alpaca_eval_366",
+    "eval_idx": 0,
+    "depl_idx": 3,
+    "p_eval": 0.4,
+    "qwen": true,
+    "eval_chunks": 19,
+    "depl_chunks": 14,
+    "base_choice": "shortest CoT with that label"
+  },
+  {
+    "prompt": "probe_mt_bench_68280443",
+    "eval_idx": 17,
+    "depl_idx": 2,
+    "p_eval": 0.6,
+    "qwen": true,
+    "eval_chunks": 21,
+    "depl_chunks": 28,
+    "base_choice": "shortest CoT with that label"
+  },
+  {
+    "prompt": "probe_alpaca_eval_272",
+    "eval_idx": 14,
+    "depl_idx": 16,
+    "p_eval": 0.5,
+    "qwen": false,
+    "eval_chunks": 21,
+    "depl_chunks": 25,
+    "base_choice": "shortest CoT with that label"
+  },
+  {
+    "prompt": "probe_wildchat_natural_dd1d312f",
+    "eval_idx": 0,
+    "depl_idx": 3,
+    "p_eval": 0.5,
+    "qwen": false,
+    "eval_chunks": 30,
+    "depl_chunks": 15,
+    "base_choice": "shortest CoT with that label"
+  },
+  {
+    "prompt": "probe_wildchat_test_72d0530b",
+    "eval_idx": 7,
+    "depl_idx": 15,
+    "p_eval": 0.45,
+    "qwen": false,
+    "eval_chunks": 43,
+    "depl_chunks": 25,
+    "base_choice": "shortest CoT with that label"
+  },
+  {
+    "prompt": "probe_alpaca_eval_401",
+    "eval_idx": 6,
+    "depl_idx": 5,
+    "p_eval": 0.45,
+    "qwen": false,
+    "eval_chunks": 33,
+    "depl_chunks": 17,
+    "base_choice": "shortest CoT with that label"
+  },
+  {
+    "prompt": "probe_wildchat_natural_1e57a92a",
+    "eval_idx": 14,
+    "depl_idx": 19,
+    "p_eval": 0.45,
+    "qwen": false,
+    "eval_chunks": 59,
+    "depl_chunks": 22,
+    "base_choice": "shortest CoT with that label"
+  },
+  {
+    "prompt": "probe_wildchat_natural_53b5b644",
+    "eval_idx": 13,
+    "depl_idx": 3,
+    "p_eval": 0.45,
+    "qwen": false,
+    "eval_chunks": 40,
+    "depl_chunks": 36,
+    "base_choice": "shortest CoT with that label"
+  },
+  {
+    "prompt": "probe_alpaca_eval_96",
+    "eval_idx": 14,
+    "depl_idx": 13,
+    "p_eval": 0.55,
+    "qwen": false,
+    "eval_chunks": 22,
+    "depl_chunks": 18,
+    "base_choice": "shortest CoT with that label"
+  },
+  {
+    "prompt": "probe_wildchat_natural_6902c339",
+    "eval_idx": 13,
+    "depl_idx": 5,
+    "p_eval": 0.55,
+    "qwen": false,
+    "eval_chunks": 22,
+    "depl_chunks": 25,
+    "base_choice": "shortest CoT with that label"
+  }
+]
