@@ -70,16 +70,6 @@ export OPENROUTER_API_KEY=...   # all subject-model, judge and rewrite calls go 
 ```
 
 Reference: Needham et al. 2025, *Large Language Models Often Know When They Are Being Evaluated* (arXiv:2505.23763).
-Reports: `report/index.html` (Qwen3-32B) and `report/gemma.html` (Gemma 4 26B-A4B); open them in a browser.
+Reports: `report/index.html` (Qwen3-32B), `report/gemma.html` (Gemma 4 26B-A4B) and `report/lockin.html` (before vs after lock-in insertion test, both models); open them in a browser.
 Re-run the Gemma study: `SUBJECT=gemma zsh scripts/run_gemma.sh`.
-
-## Setup
-
-```bash
-pip install -r requirements.txt
-export OPENROUTER_API_KEY=...   # all subject-model, judge and rewrite calls go through OpenRouter
-```
-
-Reference: Needham et al. 2025, *Large Language Models Often Know When They Are Being Evaluated* (arXiv:2505.23763).
-Reports: `report/index.html` (Qwen3-32B) and `report/gemma.html` (Gemma 4 26B-A4B); open them in a browser.
-Re-run the Gemma study: `SUBJECT=gemma zsh scripts/run_gemma.sh`.
+Re-run the lock-in test: `SUBJECT=gemma python scripts/insertion_lockin.py --runs <eval runs> -n 20`, then `analyze_lockin.py` and `build_report_lockin.py`.
