@@ -1,0 +1,114 @@
+<header class="col" style="display:grid;gap:16px">
+  <div class="eyebrow">Thought anchors for eval awareness · overnight white-box run</div>
+  <h1>The verdict is read off the end of the CoT</h1>
+  <p class="lede">Overnight we ran the four experiments you picked (verdict probe, prompt and whole-CoT blocks, sentence-group blocks, receiver heads),
+  then four follow-ups designed from their results. Everything ran locally on coco; no API calls.</p>
+</header>
+
+<section>
+  <div class="findings" id="tiles">__TILES__</div>
+  <p class="note col">“Share” = how much of the verdict's log-odds margin a block removes: 0 = no effect, 1 = pushed to 50/50, above 1 = flipped.
+  Every number is a median over the same 20 base CoTs per model as the suppression and causal-graph reports (10 prompts × one EVALUATION and one DEPLOYMENT run).</p>
+</section>
+
+<section>
+  <div class="eyebrow">The story</div>
+  <h2>What the night says</h2>
+  <ol class="col" style="display:grid;gap:10px;margin:0;padding-left:22px">__STORY__</ol>
+</section>
+
+<div style="position:sticky;top:0;z-index:5;background:var(--bg);padding-block:10px;border-bottom:1px solid var(--rule);display:flex;gap:12px;align-items:center;flex-wrap:wrap">
+  <span class="eyebrow" style="color:var(--ink-3)">Charts below show</span>
+  <div class="tabs" id="model-tabs" role="tablist" aria-label="Model">
+    <button class="tab" role="tab" data-m="gemma" aria-selected="true">Gemma 4 26B-A4B</button>
+    <button class="tab" role="tab" data-m="qwen" aria-selected="false">Qwen3-32B</button>
+  </div>
+</div>
+
+<section>
+  <div class="eyebrow">Experiment 2 · prompt vs CoT</div>
+  <h2>Hide the whole CoT and the verdict goes to a coin flip</h2>
+  <p class="col">__EXP2__</p>
+  <div class="panel"><h3>Share of the margin removed · <span class="mname"></span></h3><div class="chart" id="exp2"></div>
+  <p class="note">“Hidden from the answer” blocks only the tokens after the CoT (the <code>&lt;label&gt;</code> answer); “from every later token” also hides it from the CoT itself. Grey: the user prompt in quarters.</p></div>
+</section>
+
+<section>
+  <div class="eyebrow">Experiment 3 · sentence groups</div>
+  <h2>The last sentences matter; big chunks matter less than their size</h2>
+  <p class="col">__EXP3__</p>
+  <div class="panel"><h3>Group blocked vs size-matched random sentences · <span class="mname"></span></h3>
+  <div class="legend" id="exp3-leg"></div><div class="chart" id="exp3"></div>
+  <p class="note">Each group's sentences are hidden from every later token. Diamond = median over 5 random sets of the same size in the same CoT. Labels: group vs random · runs where the group beat random.</p></div>
+  <div class="panel"><h3>Growing prefix vs growing suffix blocks · <span class="mname"></span></h3><div class="chart" id="curves"></div>
+  <p class="note">Blue: the first f of the sentences hidden. Orange: everything after the first f hidden. Bands: interquartile range over 20 runs.</p></div>
+</section>
+
+<section>
+  <div class="eyebrow">Experiment 6 · receiver heads</div>
+  <h2>Receiver heads replicate, but they don't carry the verdict</h2>
+  <p class="col">__EXP6__</p>
+  <div class="panel"><h3>Mean |Δ log-odds| when one sentence is hidden in only these heads · <span class="mname"></span></h3><div class="chart" id="exp6"></div>
+  <p class="note" id="exp6-note"></p></div>
+</section>
+
+<section>
+  <div class="eyebrow">Experiment 1 · verdict probe</div>
+  <h2>A probe reads the verdict about as well as the words do</h2>
+  <p class="col">__EXP1__</p>
+  <div class="panel"><h3>AUC for the final verdict at each sentence, by position · <span class="mname"></span></h3><div class="chart" id="probe"></div>
+  <p class="note">Leave-one-prompt-out: trained on 9 prompts, tested on the 10th (200 sampled CoTs, ~half each verdict per prompt). Residual probe = logistic regression on the residual stream at the sentence's last token; layer picked by early AUC.
+  BoW = TF-IDF unigram+bigram logistic regression on the text written so far (orange) or the current sentence only (grey).</p></div>
+  <div class="two">
+    <div class="panel"><h3>Overall AUC by layer</h3><div class="chart" id="probe-layers"></div><p class="note">“early” = mean AUC over the first 30% of the CoT.</p></div>
+    <div class="panel"><h3>Probe vs resampling on the base runs</h3><p id="probe-lock" style="font-size:.92rem"></p><p class="note">__PROBE_NOTE__</p></div>
+  </div>
+  <div class="panel"><h3>One run: probe P(EVAL) vs resampled P(EVAL)</h3><div class="tabs" id="probe-runs" role="tablist" aria-label="Run"></div>
+  <div class="chart" id="probe-run"></div><p class="note" id="probe-run-note"></p></div>
+</section>
+
+<section>
+  <div class="eyebrow">Follow-ups · designed from the results above</div>
+  <h2>Swap in another CoT's ending and the answer follows the ending</h2>
+  <p class="col">__SPLICE__</p>
+  <div class="panel"><h3>Splices: A's start + B's end (B = the same prompt's CoT with the other verdict) · <span class="mname"></span></h3><div class="chart" id="splices"></div>
+  <p class="note">Median log-odds toward A's verdict after splicing (A's own base margin: median about 23 log-odds for Gemma, about 11 for Qwen). Orange = the answer sides with B, the ending.</p></div>
+</section>
+
+<section>
+  <div class="eyebrow">Follow-ups · where in depth</div>
+  <h2>The answer reads the CoT in a narrow band of layers</h2>
+  <p class="col">__LAYERS__</p>
+  <div class="two">
+    <div class="panel"><h3>CoT hidden from the answer in one band of layers · <span class="mname"></span></h3><div class="chart" id="layers"></div></div>
+    <div class="panel"><h3>Hidden in all layers from l up, or below l</h3><div class="chart" id="layers-cum"></div></div>
+  </div>
+</section>
+
+<section id="readers-sec">
+  <div class="eyebrow">Follow-ups · which heads</div>
+  <h2>__READERS_H__</h2>
+  <p class="col">__READERS__</p>
+  <div class="panel"><h3>Block the CoT from the answer in only the top-k “reader” heads · <span class="mname"></span></h3><div class="chart" id="readers"></div>
+  <p class="note">Heads ranked by how much attention the answer tokens pay to the CoT (averaged over the 20 runs). Blue: CoT hidden from the answer in just the top-k. Orange: hidden in every head except the top-k (do the top-k alone suffice?). Grey: k random heads.</p></div>
+  <div class="two">
+    <div class="panel"><h3>One layer at a time, inside the read-out band</h3><div class="chart" id="readers-layer"></div></div>
+    <div class="panel"><h3>Top-k heads inside the band vs random heads from the band</h3><div class="chart" id="readers-win"></div></div>
+  </div>
+</section>
+
+<section>
+  <div class="eyebrow">Other follow-ups</div>
+  <h2>Smaller checks</h2>
+  <ul class="col" style="display:grid;gap:10px;margin:0;padding-left:20px">__SMALL__</ul>
+</section>
+
+<section>
+  <div class="eyebrow">Next</div>
+  <h2>What I would run next</h2>
+  <ul class="col" style="display:grid;gap:10px;margin:0;padding-left:20px">__NEXT__</ul>
+</section>
+
+<section>
+  <details><summary>Method and caveats</summary><div class="col"><ul style="display:grid;gap:8px;margin:0;padding-left:20px">__METHOD__</ul></div></details>
+</section>

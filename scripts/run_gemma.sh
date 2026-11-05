@@ -3,9 +3,9 @@
 # Every stage is gated on the remaining budget (budget.py, $8 cap); a stage that does not fit is skipped and
 # logged. Order: cheap must-haves first, then the adaptive top-up of the resampling with whatever is left.
 # Resumable: resample/behavior/register skip finished work.
-cd "$(dirname "$0")"
+cd ../scripts
 export SUBJECT=gemma
-P=${PYTHON:-python}
+P=python
 R=../results/gemma
 N1=${N1:-20}; N2=${N2:-40}; N_FORCED=${N_FORCED:-10}; N_INS=${N_INS:-20}; N_BEH=${N_BEH:-16}
 COST_ROLL=0.0002   # $ per rollout (measured 0.00014 on the shortest run, padded)
